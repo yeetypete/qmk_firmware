@@ -38,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, KC_SLEP,
         _______, RGB_SPD, RGB_VAI, RGB_SPI, RGB_HUI, RGB_SAI, _______, U_T_AUTO,U_T_AGCR,_______, KC_PSCR, KC_SCRL, KC_PAUS, _______, KC_VOLU,
         _______, RGB_RMOD,RGB_VAD, RGB_MOD, RGB_HUD, RGB_SAD, _______, _______, _______, _______, _______, _______,          _______, KC_VOLD,
-        _______, RGB_TOG, _______, _______, _______, MD_BOOT, NK_TOGG, DBG_TOG, _______, _______, _______, _______,          KC_MUTE, KC_HOME,
+        _______, RGB_TOG, _______, _______, _______, MD_BOOT, NK_TOGG, DBG_TOG, _______, _______, _______, KC_NUM,          KC_MUTE, KC_HOME,
         _______, _______, _______,                            _______,                            _______, _______, KC_MPRV, KC_MPLY, KC_MNXT
     ),
     /*
@@ -74,9 +74,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if ((mod_state & MOD_MASK_ALT)) {
                     // Temporarily cancel ALT alt so that ALT isn't
                     // applied to the KC_ESC keycode
-                    del_mods(MOD_MASK_ALT);                    
+                    del_mods(MOD_MASK_ALT);
                     register_code(KC_ESC);
-                    
+
                     // update ESC key status
                     esckey_registered = true;
                     // Reapply modifier so that the held alt key(s)
