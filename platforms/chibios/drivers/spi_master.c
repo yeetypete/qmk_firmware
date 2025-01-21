@@ -249,11 +249,11 @@ bool spi_start_extended(spi_start_config_t *start_config) {
 #elif defined(AT32F415)
     spiConfig.ctrl1 = 0;
 
-    if (start_config->lsb_first) {
+    if (lsbFirst) {
         spiConfig.ctrl1 |= SPI_CTRL1_LTF;
     }
 
-    switch (start_config->mode) {
+    switch (mode) {
         case 0:
             break;
         case 1:

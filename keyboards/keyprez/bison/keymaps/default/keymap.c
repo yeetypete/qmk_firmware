@@ -25,6 +25,11 @@ enum layer_names {
     _FN,
 };
 
+enum custom_keycodes {
+    KC_PRVWD = SAFE_RANGE,
+    KC_NXTWD
+};
+
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 #define FN MO(_FN)
@@ -41,9 +46,6 @@ enum layer_names {
 #define KC_QWRTY PDF(_QWERTY)
 #define KC_COLMK PDF(_COLEMAK)
 #define KC_HRM PDF(_HRM)
-
-#define KC_PRVWD LCTL(KC_LEFT)
-#define KC_NXTWD LCTL(KC_RGHT)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
@@ -184,3 +186,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                           _______,_______, _______,       _______,              _______,      _______, _______, _______
     ),
 };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KC_PRVWD:
+            if (record->event.pressed) {
+                register_mods(mod_config(MOD_LCTL));
+                register_code(KC_LEFT);
+            } else {
+                unregister_mods(mod_config(MOD_LCTL));
+                unregister_code(KC_LEFT);
+            }
+            break;
+        case KC_NXTWD:
+             if (record->event.pressed) {
+                register_mods(mod_config(MOD_LCTL));
+                register_code(KC_RIGHT);
+            } else {
+                unregister_mods(mod_config(MOD_LCTL));
+                unregister_code(KC_RIGHT);
+            }
+            break;
+    }
+    return true;
+}
