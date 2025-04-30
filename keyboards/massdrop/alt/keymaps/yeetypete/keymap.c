@@ -41,44 +41,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #define MODS_CTRL (get_mods() & MOD_BIT(KC_LCTL) || get_mods() & MOD_BIT(KC_RCTL))
 #define MODS_ALT (get_mods() & MOD_BIT(KC_LALT) || get_mods() & MOD_BIT(KC_RALT))
 
-uint8_t mod_state;
+const uint16_t PROGMEM alt_esc_combo[] = {KC_LALT, KC_GRV, COMBO_END};
+combo_t                key_combos[]    = {COMBO(alt_esc_combo, KC_ESC)};
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint32_t key_timer;
-    mod_state = get_mods();
 
     switch (keycode) {
-        case KC_GRV: {
-            // keep track of ESC key status
-            static bool esckey_registered;
-
-            if (record->event.pressed) {
-                // detect activation of only LALT
-                if ((mod_state & MOD_MASK_ALT)) {
-                    // Temporarily cancel ALT alt so that ALT isn't
-                    // applied to the KC_ESC keycode
-                    del_mods(MOD_MASK_ALT);
-                    register_code(KC_ESC);
-
-                    // update ESC key status
-                    esckey_registered = true;
-                    // Reapply modifier so that the held alt key(s)
-                    // still work even after having pressed the GRV/ESC key
-                    set_mods(mod_state);
-                    return false;
-                }
-            } else {
-                // in case KC_ESC is still being sent even after the release of KC_GRV
-                if (esckey_registered) {
-                    unregister_code(KC_ESC);
-                    esckey_registered = false;
-                    return false;
-                }
-            }
-            // Let QMK process the KC_GRV keycode as usual outside of LALT
-            return true;
-        }
-
         case U_T_AUTO:
             if (record->event.pressed && MODS_SHIFT && MODS_CTRL) {
                 TOGGLE_FLAG_AND_PRINT(usb_extra_manual, "USB extra port manual mode");
